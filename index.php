@@ -4,8 +4,6 @@ $is_auth = rand(0, 1);
 $user_name = 'Оксана';
 
 $nav_list = ["Доски и лыжи", "Крепления", "Ботинки", "Одежда", "Инструменты", "Разное"];
-$num_count = count($nav_list);
-$index = 0;
 
 $lots_list = [
     [
@@ -96,13 +94,11 @@ $lots_list = [
                 <!--заполните этот список из массива категорий-->
 
                 <?php
-                while ($index < $num_count): ?>
+                foreach ($nav_list as $value): ?>
                     <li class="promo__item promo__item--boards">
-                        <a class="promo__link" href="pages/all-lots.html"><?= $nav_list[$index]; ?></a>
+                        <a class="promo__link" href="pages/all-lots.html"><?= $value; ?></a>
                     </li>
-                    <?php $index = $index + 1; ?>
-                <?php endwhile; ?>
-
+                <?php endforeach; ?>
 
             </ul>
         </section>
@@ -143,13 +139,11 @@ $lots_list = [
         <ul class="nav__list container">
             <!--заполните этот список из массива категорий-->
             <?php
-            $index = 0;
-            while ($index < $num_count): ?>
+            foreach ($nav_list as $value): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= $nav_list[$index]; ?></a>
+                    <a href="pages/all-lots.html"><?= $value; ?></a>
                 </li>
-                <?php $index = $index + 1; ?>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
 
         </ul>
     </nav>
