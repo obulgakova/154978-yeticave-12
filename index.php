@@ -43,9 +43,7 @@ $lots_list = [
 function price_formatting($value)
 {
     $price = ceil($value);
-    if ($price >= 1000) {
-        $price = number_format($price, '0', '', ' ');
-    }
+    $price = number_format($price, '0', '', ' ');
     $price .= " ₽";
     return $price;
 }
