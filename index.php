@@ -40,34 +40,7 @@ $lots_list = [
 ];
 
 
-function price_formatting($value)
-{
-    $price = ceil($value);
-    $price = number_format($price, '0', '', ' ');
-    $price .= " ₽";
-    return $price;
-}
-;
-
-function include_template($name, array $data = [])
-{
-    $name = 'templates/' . $name;
-    $result = '';
-
-    if (!is_readable($name)) {
-        return $result;
-    }
-
-    ob_start();
-    extract($data);
-    require $name;
-
-    $result = ob_get_clean();
-
-    return $result;
-}
-;
-
+require_once('helpers.php');
 
 $main_content = include_template('main.php', [
     'nav_list' => $nav_list,
@@ -81,6 +54,6 @@ $layout_content = include_template('layout.php', [
     'title' => 'Главная'
 ]);
 
-print($layout_content);
+echo $layout_content;
 
 ?>
