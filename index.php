@@ -48,7 +48,6 @@ $lots_list = [
         'date_remaining' => '2021-04-15'
     ]
 ];
-['a', 'b'];
 
 $main_content = include_template('main.php', [
     'nav_list' => $nav_list,
