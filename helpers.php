@@ -158,12 +158,30 @@ function price_formatting($value)
  * @param $str
  * @return string
  */
-
 function esc($str)
 {
     $text = htmlspecialchars($str, ENT_QUOTES);
     return $text;
 }
 
+
+/**
+ * Принимает дату в формате ГГГГ-ММ-ДД
+ * Возвращает массив, где первый элемент — целое количество часов до даты, а второй — остаток в минутах
+ * @param $date
+ * @return array
+ */
+function dt_remaining($date)
+{
+    $ts = time();
+    $end_ts = strtotime($date);
+    $ts_diff = $end_ts - $ts;
+
+    $hours = str_pad(floor($ts_diff / 3600),"2", '0', STR_PAD_LEFT);
+    $minutes = str_pad(floor(($ts_diff % 3600) / 60), "2", '0', STR_PAD_LEFT);
+    $hours_minutes = [$hours, $minutes];
+
+    return $hours_minutes;
+}
 
 
