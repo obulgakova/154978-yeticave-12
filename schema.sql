@@ -5,26 +5,27 @@ USE yeticave;
 
 CREATE TABLE categories (
                             id INT AUTO_INCREMENT PRIMARY KEY,
-                            title CHAR(255) NOT NULL UNIQUE,
-                            symbol_code CHAR(255) NOT NULL UNIQUE
+                            title VARCHAR(200) NOT NULL UNIQUE,
+                            symbol_code VARCHAR(200) NOT NULL UNIQUE
 );
 
 CREATE TABLE lots (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     title CHAR(255) NOT NULL,
+                     dt_add DATETIME(0),
+                     title VARCHAR(200) NOT NULL,
                      description TEXT,
-                     img CHAR(255) NOT NULL UNIQUE,
+                     img VARCHAR(200) NOT NULL UNIQUE,
                      price_add INT NOT NULL,
                      dt_finish TIMESTAMP,
                      step_rate INT NOT NULL,
                      category_id INT UNSIGNED,
-                     user_id INT UNSIGNED
+                     user_id INT UNSIGNED,
+                     user_win_id INT UNSIGNED
 );
 
 CREATE TABLE rates (
                       id INT AUTO_INCREMENT PRIMARY KEY,
-                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      dt_add DATETIME(0),
                       price_add DECIMAL NOT NULL,
                       user_id INT UNSIGNED,
                       lot_id INT UNSIGNED
@@ -32,10 +33,10 @@ CREATE TABLE rates (
 
 CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
-                       dt_reg TIMESTAMP,
-                       email CHAR(255) NOT NULL UNIQUE,
-                       name CHAR(255) NOT NULL,
-                       password CHAR(255) NOT NULL,
-                       contacts CHAR(255)
+                       dt_reg DATETIME(0),
+                       email VARCHAR(200) NOT NULL UNIQUE,
+                       name VARCHAR(200) NOT NULL,
+                       password VARCHAR(200) NOT NULL,
+                       contacts VARCHAR(200)
 );
 
