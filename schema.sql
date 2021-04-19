@@ -1,38 +1,41 @@
 CREATE DATABASE yeticave
-    DEFAULT CHARACTER SET utf8
-    DEFAULT COLLATE utf8_general_ci;
+    DEFAULT CHARACTER SET utf8mb4;
 
 USE yeticave;
 
-CREATE TABLE category (
+CREATE TABLE categories (
                             id INT AUTO_INCREMENT PRIMARY KEY,
-                            title CHAR NOT NULL UNIQUE,
-                            symbol_code CHAR NOT NULL UNIQUE
+                            title CHAR(255) NOT NULL UNIQUE,
+                            symbol_code CHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE lot (
+CREATE TABLE lots (
                      id INT AUTO_INCREMENT PRIMARY KEY,
                      dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                     title CHAR NOT NULL,
+                     title CHAR(255) NOT NULL,
                      description TEXT,
-                     img CHAR NOT NULL UNIQUE,
+                     img CHAR(255) NOT NULL UNIQUE,
                      price_add INT NOT NULL,
                      dt_finish TIMESTAMP,
-                     step_rate INT NOT NULL
+                     step_rate INT NOT NULL,
+                     category_id INT UNSIGNED,
+                     user_id INT UNSIGNED
 );
 
-CREATE TABLE rate (
+CREATE TABLE rates (
                       id INT AUTO_INCREMENT PRIMARY KEY,
                       dt_add TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                      price_add DECIMAL NOT NULL
+                      price_add DECIMAL NOT NULL,
+                      user_id INT UNSIGNED,
+                      lot_id INT UNSIGNED
 );
 
-CREATE TABLE user (
+CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
                        dt_reg TIMESTAMP,
-                       email VARCHAR(128) NOT NULL UNIQUE,
-                       name CHAR NOT NULL,
-                       password CHAR NOT NULL,
-                       contacts CHAR
+                       email CHAR(255) NOT NULL UNIQUE,
+                       name CHAR(255) NOT NULL,
+                       password CHAR(255) NOT NULL,
+                       contacts CHAR(255)
 );
 
