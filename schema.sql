@@ -16,7 +16,7 @@ CREATE TABLE lots (
                      description TEXT,
                      img VARCHAR(200) NOT NULL UNIQUE,
                      price_add INT NOT NULL,
-                     dt_finish TIMESTAMP,
+                     dt_finish DATETIME,
                      step_rate INT NOT NULL,
                      category_id INT UNSIGNED,
                      user_id INT UNSIGNED,
