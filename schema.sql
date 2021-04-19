@@ -11,7 +11,7 @@ CREATE TABLE categories (
 
 CREATE TABLE lots (
                      id INT AUTO_INCREMENT PRIMARY KEY,
-                     dt_add DATETIME(0),
+                     dt_add DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
                      title VARCHAR(200) NOT NULL,
                      description TEXT,
                      img VARCHAR(200) NOT NULL UNIQUE,
@@ -25,7 +25,7 @@ CREATE TABLE lots (
 
 CREATE TABLE rates (
                       id INT AUTO_INCREMENT PRIMARY KEY,
-                      dt_add DATETIME(0),
+                      dt_add DATETIME DEFAULT CURRENT_TIMESTAMP,
                       price_add DECIMAL NOT NULL,
                       user_id INT UNSIGNED,
                       lot_id INT UNSIGNED
@@ -33,7 +33,7 @@ CREATE TABLE rates (
 
 CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
-                       dt_reg DATETIME(0),
+                       dt_reg DATETIME DEFAULT CURRENT_TIMESTAMP,
                        email VARCHAR(200) NOT NULL UNIQUE,
                        name VARCHAR(200) NOT NULL,
                        password VARCHAR(200) NOT NULL,
