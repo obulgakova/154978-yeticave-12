@@ -5,16 +5,16 @@ USE yeticave;
 
 CREATE TABLE categories (
                             id INT AUTO_INCREMENT PRIMARY KEY,
-                            title VARCHAR(200) NOT NULL UNIQUE,
-                            symbol_code VARCHAR(200) NOT NULL UNIQUE
+                            title VARCHAR(255) NOT NULL UNIQUE,
+                            symbol_code VARCHAR(255) NOT NULL UNIQUE
 );
 
 CREATE TABLE lots (
                      id INT AUTO_INCREMENT PRIMARY KEY,
                      dt_add DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
-                     title VARCHAR(200) NOT NULL,
+                     title VARCHAR(255) NOT NULL,
                      description TEXT,
-                     img VARCHAR(200) NOT NULL UNIQUE,
+                     img VARCHAR(255) NOT NULL UNIQUE,
                      price_add INT NOT NULL,
                      dt_finish DATETIME,
                      step_rate INT NOT NULL,
@@ -34,9 +34,8 @@ CREATE TABLE rates (
 CREATE TABLE users (
                        id INT AUTO_INCREMENT PRIMARY KEY,
                        dt_reg DATETIME DEFAULT CURRENT_TIMESTAMP,
-                       email VARCHAR(200) NOT NULL UNIQUE,
-                       name VARCHAR(200) NOT NULL,
-                       password VARCHAR(200) NOT NULL,
-                       contacts VARCHAR(200)
+                       email VARCHAR(255) NOT NULL UNIQUE,
+                       name VARCHAR(255) NOT NULL,
+                       password VARCHAR(255) NOT NULL,
+                       contacts VARCHAR(255)
 );
-
