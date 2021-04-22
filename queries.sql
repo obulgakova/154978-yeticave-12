@@ -108,19 +108,23 @@ SET dt_add    = NOW(),
 SELECT *
 FROM categories;
 
-SELECT l.title, l.price_add, img, MAX(r.price_add) current_price, c.title category_title
+SELECT l.title,
+       l.price_add,
+       img,
+       (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id) current_price,
+       c.title                                                      category_title
 FROM lots l
          JOIN categories c ON l.category_id = c.id
-         LEFT JOIN rates r ON l.id = r.lot_id
-WHERE dt_finish > NOW()
-GROUP BY l.title, l.price_add, img;
+WHERE dt_finish > NOW();
 
-SELECT l.title, l.price_add, img, MAX(r.price_add) current_price, c.title category_title
+SELECT l.title,
+       l.price_add,
+       img,
+       (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id) current_price,
+       c.title                                                      category_title
 FROM lots l
          JOIN categories c ON l.category_id = c.id
-         LEFT JOIN rates r ON l.id = r.lot_id
-WHERE l.id = 1
-GROUP BY l.title, l.price_add, img;
+WHERE l.id = 1;
 
 UPDATE lots
 SET title = 'Новое название'
