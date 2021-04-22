@@ -62,5 +62,3 @@ $layout_content = include_template('layout.php', [
 ]);
 
 echo $layout_content;
-
-?>
