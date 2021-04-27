@@ -55,7 +55,7 @@
             <?php
             foreach ($nav_list as $value): ?>
                 <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= esc($value); ?></a>
+                    <a href="pages/all-lots.html"><?= esc($value['title']); ?></a>
                 </li>
             <?php endforeach; ?>
 

@@ -57,7 +57,7 @@ SET title       = 'Крепления Union Contact Pro 2015 года разме
     description = 'Описание',
     img         = 'img/lot-3.jpg',
     price_add   = '8000',
-    dt_finish   = '2000.04.21',
+    dt_finish   = '2022.04.21',
     step_rate   = '300',
     category_id = '2',
     user_id     = '1',
@@ -92,6 +92,7 @@ SET title       = 'Маска Oakley Canopy',
     category_id = '6',
     user_id     = '2',
     user_win_id = '2';
+
 
 INSERT INTO rates
 SET dt_add    = NOW(),
