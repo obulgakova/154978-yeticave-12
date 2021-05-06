@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require_once 'init.php';
 
 $sql = 'SELECT * FROM categories';
 $result = $db->query($sql);
@@ -32,7 +32,7 @@ $layout_content = include_template('layout.php', [
     'content' => $main_content,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
-    'title' => 'Главная'
+    'title' => 'Главная',
 ]);
 
 echo $layout_content;

@@ -1,5 +1,5 @@
 <?php
-require_once('init.php');
+require 'init.php';
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -27,13 +27,28 @@ $stmt->execute();
 $result = $stmt->get_result();
 $lot_info = $result->fetch_assoc();
 
-if (!$lot_info) {
-    http_response_code(404);
-}
+
+$is_auth = rand(0, 1);
+$user_name = 'Оксана';
 
 
-$lot_content = include_template('lot-layout.php', [
+$lot_tpl = include_template('lot.tpl.php', [
     'nav_list' => $nav_list,
     'lot_info' => $lot_info
 ]);
-echo $lot_content;
+
+$layout_content = include_template('layout.php', [
+    'nav_list' => $nav_list,
+    'content' => $lot_tpl,
+    'is_auth' => $is_auth,
+    'user_name' => $user_name,
+    'title' => $lot_info['title'],
+    'show_nav_list' => true
+]);
+
+
+if (!$lot_info) {
+    http_response_code(404);
+} else {
+    echo $layout_content;
+};

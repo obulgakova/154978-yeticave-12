@@ -152,7 +152,6 @@ function price_formatting($value)
 }
 
 
-
 /**
  * Принимает строку. Возвращет отформатированную строку - заменяет HTML-теги и кавычки на HTML-мнемоники.
  * @param $str
@@ -177,7 +176,7 @@ function dt_remaining($date)
     $end_ts = strtotime($date);
     $ts_diff = $end_ts - $ts;
 
-    $hours = str_pad(floor($ts_diff / 3600),"2", '0', STR_PAD_LEFT);
+    $hours = str_pad(floor($ts_diff / 3600), "2", '0', STR_PAD_LEFT);
     $minutes = str_pad(floor(($ts_diff % 3600) / 60), "2", '0', STR_PAD_LEFT);
     $hours_minutes = [$hours, $minutes];
 

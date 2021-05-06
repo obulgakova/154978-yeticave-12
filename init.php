@@ -4,7 +4,7 @@ if (!file_exists('config.php')) {
     trigger_error($msg, E_USER_ERROR);
 }
 $config = require 'config.php';
-require_once('helpers.php');
+require 'helpers.php';
 
 $db_host = $config['db']['host'];
 $db_username = $config['db']['username'];
