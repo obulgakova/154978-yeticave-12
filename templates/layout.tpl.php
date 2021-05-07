@@ -42,7 +42,7 @@
             </nav>
         </div>
     </header>
-    <?php if (isset($show_nav_list) && $show_nav_list): ?>
+    <?php if (isset($hide_nav_list) == false): ?>
         <nav class="nav">
             <ul class="nav__list container">
                 <?php

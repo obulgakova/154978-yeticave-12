@@ -5,8 +5,12 @@ if (isset($_GET['id'])) {
     $id = $_GET['id'];
 } else {
     http_response_code(404);
+    die();
 }
 
+$sql = 'SELECT * FROM categories';
+$result = $db->query($sql);
+$nav_list = $result->fetch_all(MYSQLI_ASSOC);
 
 $sql = 'SELECT l.title,
        l.price_add,
@@ -31,24 +35,21 @@ $lot_info = $result->fetch_assoc();
 $is_auth = rand(0, 1);
 $user_name = 'Оксана';
 
+if (!$lot_info) {
+    http_response_code(404);
+    die();
+};
 
 $lot_tpl = include_template('lot.tpl.php', [
     'nav_list' => $nav_list,
     'lot_info' => $lot_info
 ]);
 
-$layout_content = include_template('layout.php', [
+$layout_content = include_template('layout.tpl.php', [
     'nav_list' => $nav_list,
     'content' => $lot_tpl,
     'is_auth' => $is_auth,
     'user_name' => $user_name,
-    'title' => $lot_info['title'],
-    'show_nav_list' => true
+    'title' => $lot_info['title']
 ]);
-
-
-if (!$lot_info) {
-    http_response_code(404);
-} else {
-    echo $layout_content;
-};
+echo $layout_content;
