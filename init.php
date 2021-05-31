@@ -12,3 +12,10 @@ require 'helpers.php';
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 $db = new mysqli($config['db']['host'], $config['db']['username'], $config['db']['password'], $config['db']['dbname'], $config['db']['port']);
 $db->set_charset($config['db']['charset']);
+
+$sql = 'SELECT * FROM categories';
+$result = $db->query($sql);
+$nav_list = $result->fetch_all(MYSQLI_ASSOC);
+
+$is_auth = rand(0, 1);
+$user_name = 'Оксана';

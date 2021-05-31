@@ -16,7 +16,7 @@ CREATE TABLE lots
     dt_add      DATETIME(0) DEFAULT CURRENT_TIMESTAMP,
     title       VARCHAR(255) NOT NULL,
     description TEXT,
-    img         VARCHAR(255) NOT NULL UNIQUE,
+    img         VARCHAR(255) NOT NULL,
     price_add   INT          NOT NULL,
     dt_finish   DATETIME,
     step_rate   INT          NOT NULL,
