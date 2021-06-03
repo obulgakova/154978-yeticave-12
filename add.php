@@ -3,29 +3,25 @@ require 'init.php';
 
 $errors = [];
 
+$sql = 'SELECT `id`, `title` FROM categories';
+$res = mysqli_query($db, $sql);
+$cats_ids = [];
+
+if($res) {
+    $categories = mysqli_fetch_all($res, MYSQLI_ASSOC);
+    $cats_ids = array_column($categories, 'id');
+};
+
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
-
-    if (!empty($_FILES['lot-img']['tmp_name'])) {
-        $file_name = $_FILES['lot-img']['name'];
-        $tmp_name = $_FILES['lot-img']['tmp_name'];
-        $file_path = __DIR__ . '/uploads/';
-        $file_url = '/uploads/' . $file_name;
-
-        $file_type = strtolower(pathinfo($file_url, PATHINFO_EXTENSION));
-        if (($file_type !== "jpeg") && ($file_type !== "jpg") && ($file_type !== "png")) {
-            $errors['lot-img'] = 'Загрузите картинку в формате JPG, JPEG или PNG';
-        }
-    }
-
 
     $lot = [
         'lot-name' => $_POST['lot-name'],
         'category' => intval($_POST['category']),
         'message' => $_POST['message'],
-        'lot-rate' => $_POST['lot-rate'],
-        'lot-step' => intval($_POST['lot-step']),
+        'lot-rate' => is_numeric($_POST['lot-rate']) ? floatval($_POST['lot-rate']) : $_POST['lot-rate'],
+        'lot-step' => is_numeric($_POST['lot-step']) ? $_POST['lot-step'] + 0 : $_POST['lot-step'],
         'lot-date' => $_POST['lot-date'],
-        'lot-img' => isset($file_url) ? $file_url : null,
+        'lot-img' => $_FILES['lot-img']
     ];
 
     $required_fields = [
@@ -47,9 +43,13 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'lot-step' => function ($value) {
             return validate_step_rate($value);
         },
-        'category' => function ($value) {
-            return validate_category_id($value);
-        }
+        'category' => function ($value) use ($cats_ids){
+            return validate_category_id($value, $cats_ids);
+        },
+        'lot-img' => function ($value) {
+            return validate_file($value);
+        },
+
     ];
 
     foreach ($lot as $key => $value) {
@@ -66,7 +66,12 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     }
 
     if (count($errors) <= 0) {
+        $file_name = $_FILES['lot-img']['name'];
+        $tmp_name = $_FILES['lot-img']['tmp_name'];
+        $file_path = __DIR__ . '/uploads/';
+        $file_url = '/uploads/' . $file_name;
         move_uploaded_file($tmp_name, $file_path . $file_name);
+        $lot ['lot-img'] = $file_url;
 
         $sql = 'INSERT INTO lots (title, category_id, description, price_add, step_rate, dt_finish, img, user_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
@@ -77,6 +82,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         if ($res) {
             $lot_id = mysqli_insert_id($db);
             header("Location: lot.php?id=" . $lot_id);
+            die();
         }
     }
 }

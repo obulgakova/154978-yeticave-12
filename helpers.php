@@ -140,7 +140,7 @@ function include_template($name, array $data = [])
 /**
  * Принимает один аргумент — число. Возвращает результат — отформатированную сумму вместе со знаком рубля.
  * @param $value
- * @return float|string
+ * @return string
  */
 function price_formatting($value)
 {
@@ -188,13 +188,13 @@ function dt_remaining($date)
  */
 function validate_price($value)
 {
-    if ($value <= 0) {
+    if (!is_double($value) || $value <= 0) {
         return "Значение должно быть числом больше 0";
     }
 }
 
 /** Проверяет переданную "дату завершения" на соответствие значению - указанная дата больше текущей даты на один день.
- * @param $value
+ * @param $date
  * @return string
  */
 function validate_current_date($date)
@@ -216,13 +216,26 @@ function validate_step_rate($value)
 }
 
 /** Проверяет выбрана ли категория лота из списка.
- * @param $value
+ * @param $id
+ * @param $category_list
  * @return string
  */
-function validate_category_id($value)
+function validate_category_id($id, $category_list)
 {
-    if (!is_int($value)) {
+    if (!in_array($id, $category_list)) {
         return "Выберите категорию из списка";
+    }
+}
+
+/** Проверяет расширение загруженного файла.
+ * @param $file
+ * @return string
+ */
+function validate_file($file)
+{
+    $file_type = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (($file_type !== "jpeg") && ($file_type !== "jpg") && ($file_type !== "png")) {
+        return $errors['lot-img'] = 'Загрузите картинку в формате JPG, JPEG или PNG';
     }
 }
 

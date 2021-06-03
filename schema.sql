@@ -17,7 +17,7 @@ CREATE TABLE lots
     title       VARCHAR(255) NOT NULL,
     description TEXT,
     img         VARCHAR(255) NOT NULL,
-    price_add   INT          NOT NULL,
+    price_add   FLOAT        NOT NULL,
     dt_finish   DATETIME,
     step_rate   INT          NOT NULL,
     category_id INT UNSIGNED,
