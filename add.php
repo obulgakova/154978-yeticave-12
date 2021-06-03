@@ -3,16 +3,12 @@ require 'init.php';
 
 $errors = [];
 
-$sql = 'SELECT `id`, `title` FROM categories';
-$res = mysqli_query($db, $sql);
-$cats_ids = [];
-
-if($res) {
-    $categories = mysqli_fetch_all($res, MYSQLI_ASSOC);
-    $cats_ids = array_column($categories, 'id');
-};
-
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
+
+    $cats_ids = [];
+    foreach ($nav_list as $value) {
+        $cats_ids[] = $value['id'];
+    };
 
     $lot = [
         'lot-name' => $_POST['lot-name'],
@@ -77,13 +73,11 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
                 VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
 
         $stmt = db_get_prepare_stmt($db, $sql, $lot);
-        $res = mysqli_stmt_execute($stmt);
+        mysqli_stmt_execute($stmt);
 
-        if ($res) {
-            $lot_id = mysqli_insert_id($db);
-            header("Location: lot.php?id=" . $lot_id);
-            die();
-        }
+        $lot_id = mysqli_insert_id($db);
+        header("Location: lot.php?id=" . $lot_id);
+        die();
     }
 }
 

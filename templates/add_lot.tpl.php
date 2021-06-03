@@ -16,7 +16,7 @@
                 id="category"
                 name="category"
             >
-                <option value="Выберите категорию" selected>Выберите категорию</option>
+                <option>Выберите категорию</option>
                 <?php foreach ($nav_list as $value): ?>
                     <option
                         value="<?= esc($value['id']); ?>"
