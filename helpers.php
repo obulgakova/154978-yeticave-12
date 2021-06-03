@@ -61,7 +61,6 @@ function db_get_prepare_stmt($link, $sql, $data = [])
         }
 
         $values = array_merge([$stmt, $types], $stmt_data);
-
         $func = 'mysqli_stmt_bind_param';
         $func(...$values);
 
@@ -141,7 +140,7 @@ function include_template($name, array $data = [])
 /**
  * Принимает один аргумент — число. Возвращает результат — отформатированную сумму вместе со знаком рубля.
  * @param $value
- * @return float|string
+ * @return string
  */
 function price_formatting($value)
 {
@@ -183,4 +182,68 @@ function dt_remaining($date)
     return $hours_minutes;
 }
 
+/** Проверяет переданную "начальную цену" на соответствие значению - число больше нуля.
+ * @param $value
+ * @return string|null
+ */
+function validate_price($value)
+{
+    if (!is_double($value) || $value <= 0) {
+        return "Значение должно быть числом больше 0";
+    }
+}
 
+/** Проверяет переданную "дату завершения" на соответствие значению - указанная дата больше текущей даты на один день.
+ * @param $date
+ * @return string
+ */
+function validate_current_date($date)
+{
+    if (is_date_valid($date) && dt_remaining($date)[0] < "24") {
+        return "Дата должна быть больше текущей даты хотя бы на 1 день.";
+    }
+}
+
+/** Проверяет переданный "шаг ставки" на соответствие значению - целое число больше 0.
+ * @param $value
+ * @return string
+ */
+function validate_step_rate($value)
+{
+    if (!is_int($value) || $value <= 0) {
+        return "Значение должно быть целым числом больше 0";
+    }
+}
+
+/** Проверяет выбрана ли категория лота из списка.
+ * @param $id
+ * @param $category_list
+ * @return string
+ */
+function validate_category_id($id, $category_list)
+{
+    if (!in_array($id, $category_list)) {
+        return "Выберите категорию из списка";
+    }
+}
+
+/** Проверяет расширение загруженного файла.
+ * @param $file
+ * @return string
+ */
+function validate_file($file)
+{
+    $file_type = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+    if (($file_type !== "jpeg") && ($file_type !== "jpg") && ($file_type !== "png")) {
+        return $errors['lot-img'] = 'Загрузите картинку в формате JPG, JPEG или PNG';
+    }
+}
+
+/** Сохраняет значение полей формы после валидации.
+ * @param $name
+ * @return mixed
+ */
+function getPostVal($name)
+{
+    return filter_input(INPUT_POST, $name);
+}

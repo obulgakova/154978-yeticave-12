@@ -1,9 +1,5 @@
 <?php
-require_once 'init.php';
-
-$sql = 'SELECT * FROM categories';
-$result = $db->query($sql);
-$nav_list = $result->fetch_all(MYSQLI_ASSOC);
+require 'init.php';
 
 $sql = 'SELECT l.id, 
        l.title,
@@ -18,10 +14,6 @@ WHERE dt_finish > NOW()
 ORDER BY dt_add DESC';
 $result = $db->query($sql);
 $lots_list = $result->fetch_all(MYSQLI_ASSOC);
-
-
-$is_auth = rand(0, 1);
-$user_name = 'Оксана';
 
 $main_content = include_template('main.tpl.php', [
     'nav_list' => $nav_list,

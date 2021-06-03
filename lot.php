@@ -8,10 +8,6 @@ if (isset($_GET['id'])) {
     die();
 }
 
-$sql = 'SELECT * FROM categories';
-$result = $db->query($sql);
-$nav_list = $result->fetch_all(MYSQLI_ASSOC);
-
 $sql = 'SELECT l.title,
        l.price_add,
        img,
@@ -31,9 +27,6 @@ $stmt->execute();
 $result = $stmt->get_result();
 $lot_info = $result->fetch_assoc();
 
-
-$is_auth = rand(0, 1);
-$user_name = 'Оксана';
 
 if (!$lot_info) {
     http_response_code(404);
