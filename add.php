@@ -5,10 +5,8 @@ $errors = [];
 
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
-    $cats_ids = [];
-    foreach ($nav_list as $value) {
-        $cats_ids[] = $value['id'];
-    };
+    $cats_ids = array_column($nav_list, 'id');
+    var_dump($cats_ids);
 
     $lot = [
         'lot-name' => $_POST['lot-name'],
