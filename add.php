@@ -6,7 +6,6 @@ $errors = [];
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $cats_ids = array_column($nav_list, 'id');
-    var_dump($cats_ids);
 
     $lot = [
         'lot-name' => $_POST['lot-name'],
@@ -27,6 +26,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'lot-date',
         'lot-img',
     ];
+
     $rules = [
         'lot-rate' => function ($value) {
             return validate_price($value);
@@ -37,7 +37,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'lot-step' => function ($value) {
             return validate_step_rate($value);
         },
-        'category' => function ($value) use ($cats_ids){
+        'category' => function ($value) use ($cats_ids) {
             return validate_category_id($value, $cats_ids);
         },
         'lot-img' => function ($value) {
@@ -59,7 +59,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (count($errors) <= 0) {
+    if (empty($errors)) {
         $file_name = $_FILES['lot-img']['name'];
         $tmp_name = $_FILES['lot-img']['tmp_name'];
         $file_path = __DIR__ . '/uploads/';

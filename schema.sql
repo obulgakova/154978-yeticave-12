@@ -41,7 +41,7 @@ CREATE TABLE users
     email    VARCHAR(255) NOT NULL UNIQUE,
     name     VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    contacts VARCHAR(255)
+    message  VARCHAR(255)
 );
 
 CREATE INDEX dt_finish ON lots (dt_finish);
