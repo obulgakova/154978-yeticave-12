@@ -43,7 +43,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $sql = 'INSERT INTO users (dt_reg, email, password, name, message) VALUES (NOW(), ?, ?, ?, ?)';
 
         $stmt = $db->prepare($sql);
-        $stmt->bind_param('ssss', $form['email'], $form['password'], $form['name'], $form['message']);
+        $stmt->bind_param('ssss', $form['email'], $password, $form['name'], $form['message']);
         $stmt->execute();
 
         header("Location: /index.php");
