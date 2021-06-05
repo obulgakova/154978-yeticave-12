@@ -16,10 +16,17 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
         $errors['email'] = "Введите коректный email";
     } else {
-        $email = mysqli_real_escape_string($db, $form['email']);
-        $sql = "SELECT id FROM users WHERE email = '$email'";
-        $res = mysqli_query($db, $sql);
-        if (mysqli_num_rows($res) > 0) {
+        $sql = 'SELECT id
+        FROM users 
+        WHERE email = ?';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param('s', $form['email']);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $user_id = $result->fetch_assoc();
+
+        if ($user_id > 0) {
             $errors['email'] = "Такой email уже существует";
         };
     }
@@ -30,13 +37,14 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         };
     };
 
-    if (empty($errors)) {
+    if (!$errors) {
         $password = password_hash($form['password'], PASSWORD_DEFAULT);
 
         $sql = 'INSERT INTO users (dt_reg, email, password, name, message) VALUES (NOW(), ?, ?, ?, ?)';
 
-        $stmt = db_get_prepare_stmt($db, $sql, $form);
-        mysqli_stmt_execute($stmt);
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param('ssss', $form['email'], $form['password'], $form['name'], $form['message']);
+        $stmt->execute();
 
         header("Location: /index.php");
         die();
