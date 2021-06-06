@@ -1,6 +1,12 @@
 <?php
 require 'init.php';
 
+if (isset($_SESSION['user'])) {
+    header("Location: /");
+    http_response_code(403);
+    die();
+}
+
 $errors = [];
 
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
@@ -29,7 +35,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         if ($user_id > 0) {
             $errors['email'] = "Такой email уже существует";
         };
-    }
+    };
 
     foreach ($form as $key => $value) {
         if (in_array($key, $required_fields) && empty($value)) {
@@ -46,7 +52,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param('ssss', $form['email'], $password, $form['name'], $form['message']);
         $stmt->execute();
 
-        header("Location: /index.php");
+        header("Location: /login.php");
         die();
     };
 };
@@ -59,8 +65,6 @@ $sign_up_tpl = include_template('sign_up.tpl.php', [
 $layout_content = include_template('layout.tpl.php', [
     'content' => $sign_up_tpl,
     'nav_list' => $nav_list,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'title' => 'Регистрация'
 ]);
 

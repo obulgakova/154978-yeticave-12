@@ -2,6 +2,8 @@
 error_reporting(E_ALL);
 ini_set('display_errors',1);
 
+session_start();
+
 if (!file_exists('config.php')) {
     $msg = 'Создайте файл config.php на основе config.sample.php и внесите туда настройки сервера MySQL';
     trigger_error($msg, E_USER_ERROR);
@@ -16,6 +18,3 @@ $db->set_charset($config['db']['charset']);
 $sql = 'SELECT * FROM categories';
 $result = $db->query($sql);
 $nav_list = $result->fetch_all(MYSQLI_ASSOC);
-
-$is_auth = rand(0, 1);
-$user_name = 'Оксана';

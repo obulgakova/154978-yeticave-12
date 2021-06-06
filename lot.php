@@ -41,8 +41,6 @@ $lot_tpl = include_template('lot.tpl.php', [
 $layout_content = include_template('layout.tpl.php', [
     'nav_list' => $nav_list,
     'content' => $lot_tpl,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'title' => $lot_info['title']
 ]);
 echo $layout_content;
