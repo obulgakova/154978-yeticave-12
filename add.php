@@ -6,7 +6,6 @@ $errors = [];
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $cats_ids = array_column($nav_list, 'id');
-    var_dump($cats_ids);
 
     $lot = [
         'lot-name' => $_POST['lot-name'],
@@ -27,6 +26,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'lot-date',
         'lot-img',
     ];
+
     $rules = [
         'lot-rate' => function ($value) {
             return validate_price($value);
@@ -37,7 +37,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'lot-step' => function ($value) {
             return validate_step_rate($value);
         },
-        'category' => function ($value) use ($cats_ids){
+        'category' => function ($value) use ($cats_ids) {
             return validate_category_id($value, $cats_ids);
         },
         'lot-img' => function ($value) {
@@ -59,7 +59,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    if (count($errors) <= 0) {
+    if (!$errors) {
         $file_name = $_FILES['lot-img']['name'];
         $tmp_name = $_FILES['lot-img']['tmp_name'];
         $file_path = __DIR__ . '/uploads/';
@@ -70,10 +70,11 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $sql = 'INSERT INTO lots (title, category_id, description, price_add, step_rate, dt_finish, img, user_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
 
-        $stmt = db_get_prepare_stmt($db, $sql, $lot);
-        mysqli_stmt_execute($stmt);
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param('sssssss', $lot['lot-name'], $lot['category'], $lot['message'], $lot['lot-rate'], $lot['lot-step'], $lot['lot-date'], $lot['lot-img']);
+        $stmt->execute();
+        $lot_id = $db->insert_id;
 
-        $lot_id = mysqli_insert_id($db);
         header("Location: lot.php?id=" . $lot_id);
         die();
     }
