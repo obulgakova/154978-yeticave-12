@@ -2,7 +2,6 @@
 require 'init.php';
 
 if (!isset($_SESSION['user'])) {
-    header("Location: /");
     http_response_code(403);
     die();
 }
