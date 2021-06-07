@@ -51,17 +51,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     ];
 
-    foreach ($lot as $key => $value) {
-        if (in_array($key, $required_fields) && empty($value)) {
-            $errors[$key] = "Заполните это поле";
-        } elseif (isset($rules[$key])) {
-            $rule = $rules[$key];
-            $validationResult = $rule($value);
-            if ($validationResult) {
-                $errors[$key] = $validationResult;
-            }
-        }
-    }
+    $errors = form_validation($lot, $rules, $required_fields);
 
     if (!$errors) {
         $file_name = $_FILES['lot-img']['name'];
