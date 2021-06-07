@@ -52,15 +52,14 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     ];
 
     foreach ($lot as $key => $value) {
-        if (isset($rules[$key])) {
+        if (in_array($key, $required_fields) && empty($value)) {
+            $errors[$key] = "Заполните это поле";
+        } elseif (isset($rules[$key])) {
             $rule = $rules[$key];
             $validationResult = $rule($value);
             if ($validationResult) {
                 $errors[$key] = $validationResult;
             }
-        }
-        if (in_array($key, $required_fields) && empty($value)) {
-            $errors[$key] = "Заполните это поле";
         }
     }
 

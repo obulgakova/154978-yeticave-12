@@ -18,29 +18,40 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         'message'
     ];
 
-    if (!filter_var($form['email'], FILTER_VALIDATE_EMAIL)) {
-        $errors['email'] = "Введите коректный email";
-    } else {
-        $sql = 'SELECT id
-        FROM users 
-        WHERE email = ?';
+    $rules = [
+        'email' => function ($value) use ($db) {
+            if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                return $errors['email'] = "Введите корректный email";
+            } else {
+                $sql = 'SELECT id
+                FROM users 
+                WHERE email = ?';
 
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('s', $form['email']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        $user_id = $result->fetch_assoc();
+                $stmt = $db->prepare($sql);
+                $stmt->bind_param('s', $value);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $user_id = $result->fetch_assoc();
 
-        if ($user_id > 0) {
-            $errors['email'] = "Такой email уже существует";
-        };
-    };
+                if ($user_id > 0) {
+                    return $errors['email'] = "Пользователь с этим email уже зарегистрирован";
+                }
+            }
+        }
+
+    ];
 
     foreach ($form as $key => $value) {
         if (in_array($key, $required_fields) && empty($value)) {
             $errors[$key] = "Заполните это поле";
-        };
-    };
+        } elseif (isset($rules[$key])) {
+            $rule = $rules[$key];
+            $validationResult = $rule($value);
+            if ($validationResult) {
+                $errors[$key] = $validationResult;
+            }
+        }
+    }
 
     if (!$errors) {
         $password = password_hash($form['password'], PASSWORD_DEFAULT);
@@ -53,8 +64,9 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
         header("Location: /login.php");
         die();
-    };
-};
+    }
+
+}
 
 
 $sign_up_tpl = include_template('sign_up.tpl.php', [
