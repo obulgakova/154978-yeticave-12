@@ -22,8 +22,6 @@ $main_content = include_template('main.tpl.php', [
 $layout_content = include_template('layout.tpl.php', [
     'nav_list' => $nav_list,
     'content' => $main_content,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'title' => 'Главная',
     'hide_nav_list' => true
 ]);

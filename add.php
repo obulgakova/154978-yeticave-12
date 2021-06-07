@@ -1,6 +1,11 @@
 <?php
 require 'init.php';
 
+if (!isset($_SESSION['user'])) {
+    http_response_code(403);
+    die();
+}
+
 $errors = [];
 
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
@@ -47,15 +52,14 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     ];
 
     foreach ($lot as $key => $value) {
-        if (isset($rules[$key])) {
+        if (in_array($key, $required_fields) && empty($value)) {
+            $errors[$key] = "Заполните это поле";
+        } elseif (isset($rules[$key])) {
             $rule = $rules[$key];
             $validationResult = $rule($value);
             if ($validationResult) {
                 $errors[$key] = $validationResult;
             }
-        }
-        if (in_array($key, $required_fields) && empty($value)) {
-            $errors[$key] = "Заполните это поле";
         }
     }
 
@@ -68,10 +72,10 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $lot ['lot-img'] = $file_url;
 
         $sql = 'INSERT INTO lots (title, category_id, description, price_add, step_rate, dt_finish, img, user_id)
-                VALUES (?, ?, ?, ?, ?, ?, ?, 1)';
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
         $stmt = $db->prepare($sql);
-        $stmt->bind_param('sssssss', $lot['lot-name'], $lot['category'], $lot['message'], $lot['lot-rate'], $lot['lot-step'], $lot['lot-date'], $lot['lot-img']);
+        $stmt->bind_param('ssssssss', $lot['lot-name'], $lot['category'], $lot['message'], $lot['lot-rate'], $lot['lot-step'], $lot['lot-date'], $lot['lot-img'], $_SESSION['user']['id']);
         $stmt->execute();
         $lot_id = $db->insert_id;
 
@@ -89,8 +93,6 @@ $add_lot_tpl = include_template('add_lot.tpl.php', [
 $layout_content = include_template('layout.tpl.php', [
     'nav_list' => $nav_list,
     'content' => $add_lot_tpl,
-    'is_auth' => $is_auth,
-    'user_name' => $user_name,
     'lot-name' => 'Добавление лота',
     'title' => 'Добавление лота'
 ]);
