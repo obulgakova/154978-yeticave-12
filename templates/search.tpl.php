@@ -38,7 +38,7 @@
 
             <li class="pagination-item pagination-item-prev">
                 <?php if ($cur_page > 1): ?>
-                    <a href="/search.php?search=<?= esc($search) ?>&find=Найти&page=<?= esc($cur_page - 1); ?>">Назад</a>
+                    <a href="/search.php?search=<?= esc($search); ?>&page=<?= esc($cur_page - 1); ?>">Назад</a>
                 <?php else: ?>
                     <a>Назад</a>
                 <?php endif; ?>
@@ -46,13 +46,13 @@
 
             <?php foreach ($pages as $page): ?>
                 <li class="pagination-item <?php if ($page == $cur_page): ?> pagination-item-active" <?php endif; ?>">
-                <a href="/search.php?search=<?= esc($search) ?>&find=Найти&page=<?= esc($page); ?>"><?= esc($page); ?></a>
+                <a href="/search.php?search=<?= esc($search); ?>&page=<?= esc($page); ?>"><?= esc($page); ?></a>
                 </li>
             <?php endforeach; ?>
 
             <li class="pagination-item pagination-item-next">
                 <?php if ($cur_page < count($pages)) : ?>
-                    <a href="/search.php?search=<?= esc($search) ?>&find=Найти&page=<?= esc($cur_page + 1); ?>">Вперед</a>
+                    <a href="/search.php?search=<?= esc($search); ?>&page=<?= esc($cur_page + 1); ?>">Вперед</a>
                 <?php else: ?>
                     <a>Вперед</a>
                 <?php endif; ?>

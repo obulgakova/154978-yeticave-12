@@ -1,7 +1,7 @@
 <?php
 require 'init.php';
 
-$search = trim($_GET['search']) ?? '';
+$search = trim($_GET['search'] ?? '');
 $cur_page = $_GET['page'] ?? 1;
 
 $page_items = 9;
@@ -54,6 +54,10 @@ if ($search) {
     $lots_list = $result->fetch_all(MYSQLI_ASSOC);
 }
 
+if ($cur_page < 1 || ($cur_page > $pages_count && $pages_count != 0)) {
+    http_response_code(404);
+    die();
+}
 
 $search_content = include_template('search.tpl.php', [
     'lots_list' => $lots_list,

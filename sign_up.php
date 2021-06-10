@@ -44,19 +44,6 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $errors = form_validation($form, $rules, $required_fields);
 
-
-//    foreach ($form as $key => $value) {
-//        if (in_array($key, $required_fields) && empty($value)) {
-//            $errors[$key] = "Заполните это поле";
-//        } elseif (isset($rules[$key])) {
-//            $rule = $rules[$key];
-//            $validationResult = $rule($value);
-//            if ($validationResult) {
-//                $errors[$key] = $validationResult;
-//            }
-//        }
-//    }
-
     if (!$errors) {
         $password = password_hash($form['password'], PASSWORD_DEFAULT);
 
