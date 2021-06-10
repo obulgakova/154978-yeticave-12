@@ -247,3 +247,25 @@ function getPostVal($name)
 {
     return filter_input(INPUT_POST, $name);
 }
+
+/** Валидация формы
+ * @param $form
+ * @param $rules
+ * @param $required
+ * @return array
+ */
+function form_validation($form, $rules, $required){
+    $errors = [];
+    foreach ($form as $key => $value) {
+        if (in_array($key, $required) && empty($value)) {
+            $errors[$key] = "Заполните это поле";
+        } elseif (isset($rules[$key])) {
+            $rule = $rules[$key];
+            $validationResult = $rule($value);
+            if ($validationResult) {
+                $errors[$key] = $validationResult;
+            }
+        }
+    }
+    return $errors;
+}

@@ -5,7 +5,7 @@
         <div class="form__item  <?= esc(!empty($errors['lot-name']) ? 'form__item--invalid' : ''); ?>">
             <label for="lot-name">Наименование <sup>*</sup></label>
             <input id="lot-name" type="text" name="lot-name" placeholder="Введите наименование лота"
-                   value="<?= getPostVal('lot-name'); ?>">
+                   value="<?= esc(getPostVal('lot-name')); ?>">
             <?php if (!empty($errors['lot-name'])): ?>
                 <span class="form__error"><?= esc($errors['lot-name']); ?></span>
             <?php endif; ?>
@@ -20,7 +20,7 @@
                 <?php foreach ($nav_list as $value): ?>
                     <option
                         value="<?= esc($value['id']); ?>"
-                        <?= $value['id'] == getPostVal('category') ? 'selected' : ''; ?>
+                        <?= esc($value['id'] == getPostVal('category') ? 'selected' : ''); ?>
                     >
                         <?= esc($value['title']); ?>
                     </option>
@@ -34,7 +34,7 @@
     <div class="form__item form__item--wide <?= esc(!empty($errors['message']) ? 'form__item--invalid' : ''); ?>">
         <label for="message">Описание <sup>*</sup></label>
         <textarea id="message" name="message"
-                  placeholder="Напишите описание лота"><?= getPostVal('message'); ?></textarea>
+                  placeholder="Напишите описание лота"><?= esc(getPostVal('message')); ?></textarea>
         <?php if (!empty($errors['message'])): ?>
             <span class="form__error"><?= esc($errors['message']); ?></span>
         <?php endif; ?>
@@ -54,14 +54,14 @@
     <div class="form__container-three">
         <div class="form__item form__item--small <?= esc(!empty($errors['lot-rate']) ? 'form__item--invalid' : ''); ?>">
             <label for="lot-rate">Начальная цена <sup>*</sup></label>
-            <input id="lot-rate" type="text" name="lot-rate" placeholder="0" value="<?= getPostVal('lot-rate'); ?>">
+            <input id="lot-rate" type="text" name="lot-rate" placeholder="0" value="<?= esc(getPostVal('lot-rate')); ?>">
             <?php if (!empty($errors['lot-rate'])): ?>
                 <span class="form__error"><?= esc($errors['lot-rate']); ?></span>
             <?php endif; ?>
         </div>
         <div class="form__item form__item--small <?= esc(!empty($errors['lot-step']) ? 'form__item--invalid' : ''); ?>">
             <label for="lot-step">Шаг ставки <sup>*</sup></label>
-            <input id="lot-step" type="text" name="lot-step" placeholder="0" value="<?= getPostVal('lot-step'); ?>">
+            <input id="lot-step" type="text" name="lot-step" placeholder="0" value="<?= esc(getPostVal('lot-step')); ?>">
             <?php if (!empty($errors['lot-step'])): ?>
                 <span class="form__error"><?= esc($errors['lot-step']); ?></span>
             <?php endif; ?>
@@ -69,7 +69,7 @@
         <div class="form__item <?= esc(!empty($errors['lot-date']) ? 'form__item--invalid' : ''); ?>">
             <label for="lot-date">Дата окончания торгов <sup>*</sup></label>
             <input class="form__input-date" id="lot-date" type="text" name="lot-date"
-                   placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?= getPostVal('lot-date'); ?>">
+                   placeholder="Введите дату в формате ГГГГ-ММ-ДД" value="<?= esc(getPostVal('lot-date')); ?>">
             <?php if (!empty($errors['lot-date'])): ?>
                 <span class="form__error"><?= esc($errors['lot-date']); ?></span>
             <?php endif; ?>

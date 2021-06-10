@@ -47,3 +47,5 @@ CREATE TABLE users
 CREATE INDEX dt_finish ON lots (dt_finish);
 
 CREATE INDEX lot_id ON rates (lot_id);
+
+CREATE FULLTEXT INDEX lot_ft_search ON lots('title', 'description');
