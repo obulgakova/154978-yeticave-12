@@ -24,7 +24,7 @@
                             $date = dt_remaining($item['dt_finish']);
                             ?>
                             <div class="lot__timer timer <?= esc($date[0] < 1 ? 'timer--finishing' : ''); ?>">
-                                <?= esc($date[0]) . " : " . esc($date[1]); ?>
+                                <?= esc($date[0]) . " : " . esc($date[1]) . " : " . esc($date[2]); ?>
                             </div>
                         </div>
                     </div>
