@@ -1,0 +1,20 @@
+{
+    "name": "domains/yeticave",
+    "description": "Website for online auction",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Domains\\Yeticave\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Oksana",
+            "email": "oksbulgakova.work@gmail.com"
+        }
+    ],
+    "require": {
+        "swiftmailer/swiftmailer": "^6.2"
+    }
+}
