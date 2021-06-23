@@ -65,7 +65,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $rules = [
         'cost' => function ($value) use ($min_rate) {
-            if (!is_int($value) || $value <= 0 || $value < $min_rate) {
+            if (!is_int($value) || $value < $min_rate) {
                 return $errors['cost'] = 'Введите целое число, которое больше либо равно минимальной ставке';
             }
         }
