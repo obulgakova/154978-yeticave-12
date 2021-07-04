@@ -1,5 +1,8 @@
 <section class="rates container">
     <h2>Мои ставки</h2>
+    <?php if (!$my_bets_list) : ?>
+        <span>У вас еще нет ставок</span>
+    <?php endif; ?>
     <table class="rates__list">
         <?php foreach ($my_bets_list as $key => $lot): ?>
             <?php

@@ -1,11 +1,5 @@
 <?php
-
-if (isset($_SESSION['user'])) {
-    require 'getwinner.php';
-} else {
-    require 'init.php';
-}
-
+require 'getwinner.php';
 
 $sql = 'SELECT l.id, 
        l.title,

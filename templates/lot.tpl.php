@@ -10,37 +10,41 @@
             <p class="lot-item__description"><?= esc($lot_info['description']); ?></p>
         </div>
         <div class="lot-item__right">
-            <div class="lot-item__state">
-                <?php
-                $date = dt_remaining($lot_info['dt_finish']);
-                ?>
-                <div class="lot-item__timer timer <?= esc($date[0] < 1 ? 'timer--finishing' : ''); ?>">
-                    <?= esc($date[0]) . " : " . esc($date[1])  . " : " . esc($date[2]); ?>
-                </div>
-                <div class="lot-item__cost-state">
-                    <div class="lot-item__rate">
-                        <span class="lot-item__amount">Текущая цена</span>
-                        <span class="lot-item__cost"><?= esc(price_formatting($lot_info['current_price'])); ?></span>
+
+            <?php if (time() <= strtotime($lot_info['dt_finish'])): ?>
+                <div class="lot-item__state">
+                    <?php
+                    $date = dt_remaining($lot_info['dt_finish']);
+                    ?>
+                    <div class="lot-item__timer timer <?= esc($date[0] < 1 ? 'timer--finishing' : ''); ?>">
+                        <?= esc($date[0]) . " : " . esc($date[1]) . " : " . esc($date[2]); ?>
                     </div>
-                    <div class="lot-item__min-cost">
-                        Мин. ставка <span><?= esc(price_formatting($min_rate)); ?></span>
+                    <div class="lot-item__cost-state">
+                        <div class="lot-item__rate">
+                            <span class="lot-item__amount">Текущая цена</span>
+                            <span
+                                class="lot-item__cost"><?= esc(price_formatting($lot_info['current_price'])); ?></span>
+                        </div>
+                        <div class="lot-item__min-cost">
+                            Мин. ставка <span><?= esc(price_formatting($min_rate)); ?></span>
+                        </div>
                     </div>
+                    <?php if (isset($_SESSION['user'])) : ?>
+                        <form class="lot-item__form <?= esc(!empty($errors) ? 'form--invalid' : ''); ?>"
+                              action="lot.php?id=<?= esc($id); ?>" method="post" autocomplete="off">
+                            <p class="lot-item__form-item form__item <?= esc(!empty($errors['cost']) ? 'form__item--invalid' : ''); ?>">
+                                <label for="cost">Ваша ставка</label>
+                                <input id="cost" type="text" name="cost"
+                                       placeholder="<?= esc(price_formatting($min_rate)); ?>" value="">
+                                <?php if (!empty($errors['cost'])): ?>
+                                    <span class="form__error"><?= esc($errors['cost']); ?></span>
+                                <?php endif; ?>
+                            </p>
+                            <button type="submit" class="button">Сделать ставку</button>
+                        </form>
+                    <?php endif; ?>
                 </div>
-                <?php if (isset($_SESSION['user'])) : ?>
-                    <form class="lot-item__form <?= esc(!empty($errors) ? 'form--invalid' : ''); ?>"
-                          action="lot.php?id=<?= esc($id); ?>" method="post" autocomplete="off">
-                        <p class="lot-item__form-item form__item <?= esc(!empty($errors['cost']) ? 'form__item--invalid' : ''); ?>">
-                            <label for="cost">Ваша ставка</label>
-                            <input id="cost" type="text" name="cost"
-                                   placeholder="<?= esc(price_formatting($min_rate)); ?>" value="">
-                            <?php if (!empty($errors['cost'])): ?>
-                                <span class="form__error"><?= esc($errors['cost']); ?></span>
-                            <?php endif; ?>
-                        </p>
-                        <button type="submit" class="button">Сделать ставку</button>
-                    </form>
-                <?php endif; ?>
-            </div>
+            <?php endif; ?>
             <div class="history">
                 <h3>История ставок (<span><?= esc(count($rates_info)); ?></span>)</h3>
                 <table class="history__list">
