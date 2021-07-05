@@ -16,7 +16,7 @@ FROM lots l
         JOIN rates r ON l.id = r.lot_id
         JOIN users u ON r.user_id = u.id
 WHERE dt_finish <= NOW()
-AND user_win_id = 50
+AND user_win_id IS NULL
 AND r.price_add = (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id)';
 
 $result = $db->query($sql);
