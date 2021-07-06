@@ -25,7 +25,7 @@ if ($lots_to_update) {
         SET user_win_id = ?
         WHERE id = ?';
 
-    $mailer = new Swift_Mailer($transport);
+    $mailer = new Swift_Mailer($email_transport);
 
     $stmt = $db->prepare($sql);
 
