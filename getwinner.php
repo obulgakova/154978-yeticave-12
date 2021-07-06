@@ -1,5 +1,4 @@
 <?php
-require 'vendor/autoload.php';
 
 $sql = 'SELECT
         l.id lot_id,
@@ -25,10 +24,6 @@ if ($lots_to_update) {
     $sql = 'UPDATE lots
         SET user_win_id = ?
         WHERE id = ?';
-
-    $transport = new Swift_SmtpTransport('smtp.gmail.com', 465, 'ssl');
-    $transport->setUsername('test@gmail.com');
-    $transport->setPassword('test');
 
     $mailer = new Swift_Mailer($transport);
 
