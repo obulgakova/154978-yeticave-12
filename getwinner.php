@@ -1,13 +1,12 @@
 <?php
-require 'init.php';
 require 'vendor/autoload.php';
 
 $sql = 'SELECT
         l.id lot_id,
         l.title,
         l.dt_finish,
-        (SELECT MAX(r.dt_add) FROM rates r WHERE r.lot_id = l.id) latest_bet,
-        (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id) bet_price,
+        r.dt_add latest_bet,
+        r.price_add bet_price,
         r.user_id last_bet_user,
         u.name user_winner_name,
         u.email user_winner_email,
@@ -33,22 +32,24 @@ if ($lots_to_update) {
 
     $mailer = new Swift_Mailer($transport);
 
-    $message = new Swift_Message();
-    $message->setSubject('Ваша ставка победила');
-    $message->setFrom("keks@phpdemo.ru", "Yeticave");
+    $stmt = $db->prepare($sql);
 
     foreach ($lots_to_update as $lot => $value) {
-        $stmt = $db->prepare($sql);
         $stmt->bind_param('ss', $value['last_bet_user'], $value['lot_id']);
         $stmt->execute();
 
-        $email_content = include_template('email.tpl.php', [
-            'value' => $value
-        ]);
+        if ($stmt->affected_rows >= 1) {
+            $email_content = include_template('email.tpl.php', [
+                'value' => $value
+            ]);
 
-        $message->setTo($value['user_winner_email'], $value['user_winner_name']);
-        $message->setBody($email_content, 'text/html');
-        $result = $mailer->send($message);
+            $message = new Swift_Message();
+            $message->setSubject('Ваша ставка победила');
+            $message->setFrom("keks@phpdemo.ru", "Yeticave");
+            $message->setTo($value['user_winner_email'], $value['user_winner_name']);
+            $message->setBody($email_content, 'text/html');
+            $result = $mailer->send($message);
+        }
     }
 }
 
