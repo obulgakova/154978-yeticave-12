@@ -8,4 +8,11 @@ return [
         'port' => 3306,
         'charset' => 'utf8mb4',
     ],
+    'email_transport' => [
+        'host' => 'smtp.gmail.com',
+        'port' => 465,
+        'encryption' => 'ssl',
+        'username' => '',
+        'password' => '',
+    ],
 ];

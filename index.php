@@ -1,5 +1,6 @@
 <?php
 require 'init.php';
+require 'getwinner.php';
 
 $sql = 'SELECT l.id, 
        l.title,
