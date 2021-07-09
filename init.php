@@ -21,7 +21,7 @@ $result = $db->query($sql);
 $nav_list = $result->fetch_all(MYSQLI_ASSOC);
 
 
-$transport = new Swift_SmtpTransport($config['transport']['host'], $config['transport']['port'], $config['transport']['encryption']);
-$transport->setUsername($config['transport']['username']);
-$transport->setPassword($config['transport']['password']);
+$email_transport = new Swift_SmtpTransport($config['email_transport']['host'], $config['email_transport']['port'], $config['email_transport']['encryption']);
+$email_transport->setUsername($config['email_transport']['username']);
+$email_transport->setPassword($config['email_transport']['password']);
 

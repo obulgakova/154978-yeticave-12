@@ -7,8 +7,8 @@ $sql = 'SELECT l.id,
        l.price_add,
        img,
        dt_finish,
-       (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id) current_price,
-       c.title                                                      category_title
+       price_add current_price,
+       c.title category_title
 FROM lots l 
          JOIN categories c ON l.category_id = c.id
 WHERE dt_finish > NOW()

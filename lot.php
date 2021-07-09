@@ -8,17 +8,20 @@ if (isset($_GET['id'])) {
     die();
 }
 
+$user_id = $_SESSION['user']['id'];
+
 $errors = [];
 
 $sql = 'SELECT l.title,
-       l.price_add,
        img,
-       (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id) current_price,
+       l.price_add current_price,
        l.step_rate,
-       c.title                                                      category_title,
+       c.title category_title,
        dt_finish,
        l.description,
-       symbol_code
+       symbol_code,
+       l.user_id,
+       l.user_win_id
 FROM lots l
        JOIN categories c ON l.category_id = c.id
 WHERE l.id = ?';
@@ -36,6 +39,19 @@ if (!$lot_info) {
     http_response_code(404);
     die();
 };
+
+
+
+$sql =  'SELECT price_add, user_id
+         FROM rates 
+         WHERE lot_id = ?
+         AND price_add = (SELECT MAX(price_add) FROM rates WHERE lot_id = ?)';
+
+$stmt = $db->prepare($sql);
+$stmt->bind_param('ss', $id, $id);
+$stmt->execute();
+$result = $stmt->get_result();
+$last_bet_info = $result->fetch_assoc();
 
 $sql = 'SELECT dt_add,
         price_add, 
@@ -80,6 +96,16 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $stmt->bind_param('sss', $form['cost'], $_SESSION['user']['id'], $id);
         $stmt->execute();
 
+
+        $sql = 'UPDATE lots
+        SET price_add = ?
+        WHERE id = ?';
+
+        $stmt = $db->prepare($sql);
+        $stmt->bind_param('ss', $form['cost'], $id);
+        $stmt->execute();
+
+
         header("Location: /lot.php?id=$id");
         die();
     }
@@ -92,7 +118,8 @@ $lot_tpl = include_template('lot.tpl.php', [
     'errors' => $errors,
     'min_rate' => $min_rate,
     'id' => $id,
-    'rates_info' => $rates_info
+    'rates_info' => $rates_info,
+    'user_id' => $user_id
 ]);
 
 $layout_content = include_template('layout.tpl.php', [
