@@ -29,11 +29,9 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     $sql = 'SELECT *
             FROM users
             WHERE email = ?';
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('s', $form['email']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
+
+    $user = db_get_assoc($db, $sql, [$form['email']]);
+
 
     if (!$errors and $user) {
         if (password_verify($form['password'], $user['password'])) {

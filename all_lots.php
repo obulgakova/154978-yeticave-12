@@ -21,11 +21,7 @@ if ($category_title) {
             WHERE dt_finish > NOW()
             AND c.title = ?';
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('s', $category_title);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
+    $result = db_get_prepare_stmt($db, $sql, [$category_title])->get_result();
     $items_count = $result->fetch_assoc()['cnt'];
     $pages_count = ceil($items_count / $page_items);
     $offset = ($cur_page - 1) * $page_items;
@@ -50,10 +46,7 @@ if ($category_title) {
         LIMIT ?
         OFFSET ?';
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('sss', $category_title, $page_items, $offset);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = db_get_prepare_stmt($db, $sql, [$category_title, $page_items, $offset])->get_result();
 
     $lots_list = $result->fetch_all(MYSQLI_ASSOC);
 }

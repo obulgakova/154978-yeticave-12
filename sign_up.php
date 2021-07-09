@@ -28,11 +28,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
                 FROM users 
                 WHERE email = ?';
 
-                $stmt = $db->prepare($sql);
-                $stmt->bind_param('s', $value);
-                $stmt->execute();
-                $result = $stmt->get_result();
-                $user_id = $result->fetch_assoc();
+                $user_id = db_get_assoc($db, $sql, [$value]);
 
                 if ($user_id > 0) {
                     return $errors['email'] = "Пользователь с этим email уже зарегистрирован";
@@ -49,9 +45,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
         $sql = 'INSERT INTO users (dt_reg, email, password, name, message) VALUES (NOW(), ?, ?, ?, ?)';
 
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('ssss', $form['email'], $password, $form['name'], $form['message']);
-        $stmt->execute();
+        db_get_prepare_stmt($db, $sql, [$form['email'], $password, $form['name'], $form['message']]);
 
         header("Location: /login.php");
         die();

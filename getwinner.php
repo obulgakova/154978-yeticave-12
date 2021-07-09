@@ -27,11 +27,10 @@ if ($lots_to_update) {
 
     $mailer = new Swift_Mailer($email_transport);
 
-    $stmt = $db->prepare($sql);
 
     foreach ($lots_to_update as $lot => $value) {
-        $stmt->bind_param('ss', $value['last_bet_user'], $value['lot_id']);
-        $stmt->execute();
+
+        $stmt = db_get_prepare_stmt($db, $sql, [$value['last_bet_user'], $value['lot_id']]);
 
         if ($stmt->affected_rows >= 1) {
             $email_content = include_template('email.tpl.php', [

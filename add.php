@@ -64,9 +64,8 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $sql = 'INSERT INTO lots (title, category_id, description, price_add, step_rate, dt_finish, img, user_id)
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
 
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('ssssssss', $lot['lot-name'], $lot['category'], $lot['message'], $lot['lot-rate'], $lot['lot-step'], $lot['lot-date'], $lot['lot-img'], $_SESSION['user']['id']);
-        $stmt->execute();
+        db_get_prepare_stmt($db, $sql, [$lot['lot-name'], $lot['category'], $lot['message'], $lot['lot-rate'], $lot['lot-step'], $lot['lot-date'], $lot['lot-img'], $_SESSION['user']['id']]);
+
         $lot_id = $db->insert_id;
 
         header("Location: lot.php?id=" . $lot_id);

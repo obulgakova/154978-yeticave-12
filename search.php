@@ -16,10 +16,7 @@ if ($search) {
             AND MATCH(title, description)
             AGAINST(?)';
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('s', $search);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = db_get_prepare_stmt($db, $sql, [$search])->get_result();
 
     $items_count = $result->fetch_assoc()['cnt'];
     $pages_count = ceil($items_count / $page_items);
@@ -46,10 +43,7 @@ if ($search) {
             LIMIT ?
             OFFSET ?';
 
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('sss', $search, $page_items, $offset);
-    $stmt->execute();
-    $result = $stmt->get_result();
+    $result = db_get_prepare_stmt($db, $sql, [$search, $page_items, $offset])->get_result();
 
     $lots_list = $result->fetch_all(MYSQLI_ASSOC);
 }

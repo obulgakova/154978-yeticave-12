@@ -26,11 +26,7 @@ FROM lots l
        JOIN categories c ON l.category_id = c.id
 WHERE l.id = ?';
 
-$stmt = $db->prepare($sql);
-$stmt->bind_param('s', $id);
-$stmt->execute();
-$result = $stmt->get_result();
-$lot_info = $result->fetch_assoc();
+$lot_info = db_get_assoc($db, $sql, [$id]);
 
 $min_rate = $lot_info['current_price'] + $lot_info['step_rate'];
 
@@ -41,17 +37,13 @@ if (!$lot_info) {
 };
 
 
-
-$sql =  'SELECT price_add, user_id
+$sql = 'SELECT price_add, user_id
          FROM rates 
          WHERE lot_id = ?
          AND price_add = (SELECT MAX(price_add) FROM rates WHERE lot_id = ?)';
 
-$stmt = $db->prepare($sql);
-$stmt->bind_param('ss', $id, $id);
-$stmt->execute();
-$result = $stmt->get_result();
-$last_bet_info = $result->fetch_assoc();
+$last_bet_info = db_get_assoc($db, $sql, [$id, $id]);
+
 
 $sql = 'SELECT dt_add,
         price_add, 
@@ -63,10 +55,7 @@ FROM rates r
 WHERE lot_id = ?
 ORDER BY dt_add DESC';
 
-$stmt = $db->prepare($sql);
-$stmt->bind_param('s', $id);
-$stmt->execute();
-$result = $stmt->get_result();
+$result = db_get_prepare_stmt($db, $sql, [$id])->get_result();
 $rates_info = $result->fetch_all(MYSQLI_ASSOC);
 
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
@@ -92,18 +81,14 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
     if (!$errors) {
         $sql = 'INSERT INTO rates (dt_add, price_add, user_id, lot_id) VALUES (NOW(), ?, ?, ?)';
 
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('sss', $form['cost'], $_SESSION['user']['id'], $id);
-        $stmt->execute();
+        db_get_prepare_stmt($db, $sql, [$form['cost'], $_SESSION['user']['id'], $id]);
 
 
         $sql = 'UPDATE lots
         SET price_add = ?
         WHERE id = ?';
 
-        $stmt = $db->prepare($sql);
-        $stmt->bind_param('ss', $form['cost'], $id);
-        $stmt->execute();
+        db_get_prepare_stmt($db, $sql, [$form['cost'], $id]);
 
 
         header("Location: /lot.php?id=$id");
