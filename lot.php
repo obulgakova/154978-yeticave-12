@@ -12,14 +12,14 @@ $user_id = $_SESSION['user']['id'];
 
 $errors = [];
 
-$sql = 'SELECT l.title,
-       img,
-       l.price_add current_price,
+$sql = 'SELECT DISTINCT l.title,
+       l.img,
+       COALESCE(l.price_add, (SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id)) current_price,
        l.step_rate,
        c.title category_title,
        dt_finish,
        l.description,
-       symbol_code,
+       c.symbol_code,
        l.user_id,
        l.user_win_id
 FROM lots l
@@ -81,13 +81,6 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         $sql = 'INSERT INTO rates (dt_add, price_add, user_id, lot_id) VALUES (NOW(), ?, ?, ?)';
 
         db_get_prepare_stmt($db, $sql, [$form['cost'], $_SESSION['user']['id'], $id]);
-
-
-        $sql = 'UPDATE lots
-        SET price_add = ?
-        WHERE id = ?';
-
-        db_get_prepare_stmt($db, $sql, [$form['cost'], $id]);
 
 
         header("Location: /lot.php?id=$id");
