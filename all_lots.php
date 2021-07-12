@@ -46,9 +46,7 @@ if ($category_title) {
         LIMIT ?
         OFFSET ?';
 
-    $result = db_get_prepare_stmt($db, $sql, [$category_title, $page_items, $offset])->get_result();
-
-    $lots_list = $result->fetch_all(MYSQLI_ASSOC);
+    $lots_list = db_get_all($db, $sql, [$category_title, $page_items, $offset]);
 }
 
 if ($cur_page < 1 || ($cur_page > $pages_count && $pages_count != 0)) {

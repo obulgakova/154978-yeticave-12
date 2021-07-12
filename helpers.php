@@ -77,7 +77,7 @@ function db_get_all($db, $sql, $params, $types = null)
     $stmt = db_get_prepare_stmt($db, $sql, $params, $types);
     $result = $stmt->get_result();
 
-    return $result->fetch_all();
+    return $result->fetch_all(MYSQLI_ASSOC);
 }
 
 

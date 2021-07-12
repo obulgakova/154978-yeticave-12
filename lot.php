@@ -55,8 +55,7 @@ FROM rates r
 WHERE lot_id = ?
 ORDER BY dt_add DESC';
 
-$result = db_get_prepare_stmt($db, $sql, [$id])->get_result();
-$rates_info = $result->fetch_all(MYSQLI_ASSOC);
+$rates_info = db_get_all($db, $sql, [$id]);
 
 if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 

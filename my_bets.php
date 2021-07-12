@@ -26,8 +26,7 @@ FROM lots l
 WHERE r.user_id = ?
 ORDER BY latest_date DESC';
 
-$result = db_get_prepare_stmt($db, $sql, [$user_id])->get_result();
-$my_bets_list = $result->fetch_all(MYSQLI_ASSOC);
+$my_bets_list = db_get_all($db, $sql, [$user_id]);
 
 
 $my_bets_tpl = include_template('my_bets.tpl.php', [
