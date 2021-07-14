@@ -40,7 +40,7 @@
                         Мин. ставка <span><?= esc(price_formatting($min_rate)); ?></span>
                     </div>
                 </div>
-                <?php if ((isset($_SESSION['user'])) && (time() < strtotime($lot_info['dt_finish'])) && ($user_id != $lot_info['user_id'])): ?>
+                <?php if ($is_allowed_to_bet) : ?>
                     <form class="lot-item__form <?= esc(!empty($errors) ? 'form--invalid' : ''); ?>"
                           action="lot.php?id=<?= esc($id); ?>" method="post" autocomplete="off">
                         <p class="lot-item__form-item form__item <?= esc(!empty($errors['cost']) ? 'form__item--invalid' : ''); ?>">
