@@ -48,7 +48,7 @@
             <ul class="nav__list container">
                 <?php
                 foreach ($nav_list as $value): ?>
-                    <li class="nav__item">
+                    <li class="nav__item <?= esc(isset($category_title) == true && $value['title'] == $category_title ? 'nav__item--current' : ''); ?>">
                         <a href="all_lots.php?category_title=<?= esc($value['title']); ?>"><?= esc($value['title']); ?></a>
                     </li>
                 <?php endforeach; ?>
@@ -65,8 +65,8 @@
         <ul class="nav__list container">
             <?php
             foreach ($nav_list as $value): ?>
-                <li class="nav__item">
-                    <a href="pages/all-lots.html"><?= esc($value['title']); ?></a>
+                <li class="nav__item <?= esc(isset($category_title) == true && $value['title'] == $category_title ? 'nav__item--current' : ''); ?>">
+                    <a href="all_lots.php?category_title=<?= esc($value['title']); ?>"><?= esc($value['title']); ?></a>
                 </li>
             <?php endforeach; ?>
 
