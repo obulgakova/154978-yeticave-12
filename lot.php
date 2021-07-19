@@ -14,7 +14,7 @@ $errors = [];
 
 $sql = 'SELECT DISTINCT l.title,
        l.img,
-       COALESCE((SELECT MAX(r.price_add) FROM rates r WHERE r.lot_id = l.id), l.price_add) current_price,
+       l.price_add,
        l.step_rate,
        c.title category_title,
        dt_finish,
@@ -28,22 +28,10 @@ WHERE l.id = ?';
 
 $lot_info = db_get_assoc($db, $sql, [$id]);
 
-$min_rate = $lot_info['current_price'] + $lot_info['step_rate'];
-
-
 if (!$lot_info) {
     http_response_code(404);
     die();
 };
-
-
-$sql = 'SELECT price_add, user_id
-         FROM rates 
-         WHERE lot_id = ?
-         AND price_add = (SELECT MAX(price_add) FROM rates WHERE lot_id = ?)';
-
-$last_bet_info = db_get_assoc($db, $sql, [$id, $id]);
-
 
 $sql = 'SELECT dt_add,
         price_add, 
@@ -51,17 +39,26 @@ $sql = 'SELECT dt_add,
         lot_id, 
         u.name
 FROM rates r
-        JOIN users u ON  r.user_id = u.id
+        JOIN users u ON r.user_id = u.id
 WHERE lot_id = ?
 ORDER BY dt_add DESC';
 
 $rates_info = db_get_all($db, $sql, [$id]);
 
 
+$current_price = $lot_info['price_add'];
+
+if ($rates_info) {
+    $current_price = $rates_info[0]['price_add'];
+}
+
+$min_rate = $current_price + $lot_info['step_rate'];
+
+
 $is_auth = boolval($user_id);
 $is_date_expired = time() >= strtotime($lot_info['dt_finish']);
 $is_lot_owner = $user_id == $lot_info['user_id'];
-$is_last_bet_user = $last_bet_info && ($user_id == $last_bet_info['user_id']);
+$is_last_bet_user = $rates_info && ($user_id == $rates_info[0]['user_id']);
 
 $is_allowed_to_bet = $is_auth && !$is_date_expired && !$is_lot_owner && !$is_last_bet_user;
 
@@ -110,7 +107,8 @@ $lot_tpl = include_template('lot.tpl.php', [
     'id' => $id,
     'rates_info' => $rates_info,
     'user_id' => $user_id,
-    'is_allowed_to_bet' => $is_allowed_to_bet
+    'is_allowed_to_bet' => $is_allowed_to_bet,
+    'current_price' => $current_price
 ]);
 
 $layout_content = include_template('layout.tpl.php', [

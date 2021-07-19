@@ -34,7 +34,7 @@
                     <div class="lot-item__rate">
                         <span class="lot-item__amount">Текущая цена</span>
                         <span
-                            class="lot-item__cost"><?= esc(price_formatting($lot_info['current_price'])); ?></span>
+                            class="lot-item__cost"><?= esc(price_formatting($current_price)); ?></span>
                     </div>
                     <div class="lot-item__min-cost">
                         Мин. ставка <span><?= esc(price_formatting($min_rate)); ?></span>
