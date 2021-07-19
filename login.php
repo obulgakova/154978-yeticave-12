@@ -26,14 +26,16 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $errors = form_validation($form, $rules, $required_fields);
 
-    $sql = 'SELECT *
+
+    if (!$errors) {
+        $sql = 'SELECT *
             FROM users
             WHERE email = ?';
 
-    $user = db_get_assoc($db, $sql, [$form['email']]);
+        $user = db_get_assoc($db, $sql, [$form['email']]);
+    }
 
-
-    if (!$errors and $user) {
+    if ($user) {
         if (password_verify($form['password'], $user['password'])) {
             $_SESSION['user'] = $user;
             header("Location: /index.php");
@@ -42,7 +44,7 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
         } else {
             $errors['password'] = 'Вы ввели неверный пароль';
         }
-    } else if (!$errors and !$user) {
+    } else {
         $errors['email'] = 'Такой пользователь не найден';
     }
 }

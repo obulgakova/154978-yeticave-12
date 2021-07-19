@@ -46,14 +46,8 @@ ORDER BY dt_add DESC';
 $rates_info = db_get_all($db, $sql, [$id]);
 
 
-$current_price = $lot_info['price_add'];
-
-if ($rates_info) {
-    $current_price = $rates_info[0]['price_add'];
-}
-
+$current_price = $rates_info ? $rates_info[0]['price_add'] : $lot_info['price_add'];
 $min_rate = $current_price + $lot_info['step_rate'];
-
 
 $is_auth = boolval($user_id);
 $is_date_expired = time() >= strtotime($lot_info['dt_finish']);
