@@ -26,26 +26,26 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
 
     $errors = form_validation($form, $rules, $required_fields);
 
-    $sql = 'SELECT *
+
+    if (!$errors) {
+        $sql = 'SELECT *
             FROM users
             WHERE email = ?';
-    $stmt = $db->prepare($sql);
-    $stmt->bind_param('s', $form['email']);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $user = $result->fetch_assoc();
 
-    if (!$errors and $user) {
-        if (password_verify($form['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
-            header("Location: /index.php");
-            die();
+        $user = db_get_assoc($db, $sql, [$form['email']]);
 
+        if ($user) {
+            if (password_verify($form['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+                header("Location: /index.php");
+                die();
+
+            } else {
+                $errors['password'] = 'Вы ввели неверный пароль';
+            }
         } else {
-            $errors['password'] = 'Вы ввели неверный пароль';
+            $errors['email'] = 'Такой пользователь не найден';
         }
-    } else if (!$errors and !$user) {
-        $errors['email'] = 'Такой пользователь не найден';
     }
 }
 

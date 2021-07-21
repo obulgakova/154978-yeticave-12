@@ -3,12 +3,12 @@
     <p class="promo__text">На нашем интернет-аукционе ты найдёшь самое эксклюзивное сноубордическое и
         горнолыжное снаряжение.</p>
     <ul class="promo__list">
-        <!--заполните этот список из массива категорий-->
 
         <?php
         foreach ($nav_list as $value): ?>
             <li class="promo__item promo__item--<?= esc($value['symbol_code']); ?>">
-                <a class="promo__link" href="pages/all-lots.html"><?= esc($value['title']); ?></a>
+                <a class="promo__link"
+                   href="all_lots.php?category_title=<?= esc($value['title']); ?>"><?= esc($value['title']); ?></a>
             </li>
         <?php endforeach; ?>
 
@@ -19,7 +19,6 @@
         <h2>Открытые лоты</h2>
     </div>
     <ul class="lots__list">
-        <!--заполните этот список из массива с товарами-->
         <?php foreach ($lots_list as $key => $item): ?>
             <li class="lots__item lot">
                 <div class="lot__image">
@@ -39,7 +38,8 @@
                         $date = dt_remaining($item['dt_finish']);
                         ?>
                         <div class="lot__timer timer <?= esc($date[0] < 1 ? 'timer--finishing' : ''); ?>">
-                            <?= esc($date[0]) . " : " . esc($date[1])  . " : " . esc($date[2]); ?>                        </div>
+                            <?= esc($date[0]) . " : " . esc($date[1]) . " : " . esc($date[2]); ?>
+                        </div>
                     </div>
                 </div>
             </li>
