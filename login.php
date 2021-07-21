@@ -33,19 +33,19 @@ if ($_SERVER ['REQUEST_METHOD'] == 'POST') {
             WHERE email = ?';
 
         $user = db_get_assoc($db, $sql, [$form['email']]);
-    }
 
-    if ($user) {
-        if (password_verify($form['password'], $user['password'])) {
-            $_SESSION['user'] = $user;
-            header("Location: /index.php");
-            die();
+        if ($user) {
+            if (password_verify($form['password'], $user['password'])) {
+                $_SESSION['user'] = $user;
+                header("Location: /index.php");
+                die();
 
+            } else {
+                $errors['password'] = 'Вы ввели неверный пароль';
+            }
         } else {
-            $errors['password'] = 'Вы ввели неверный пароль';
+            $errors['email'] = 'Такой пользователь не найден';
         }
-    } else {
-        $errors['email'] = 'Такой пользователь не найден';
     }
 }
 
