@@ -12,7 +12,8 @@ $sql = 'SELECT l.id,
 FROM lots l 
          JOIN categories c ON l.category_id = c.id
 WHERE dt_finish > NOW()
-ORDER BY dt_add DESC';
+ORDER BY dt_add DESC
+LIMIT 9';
 
 $result = $db->query($sql);
 $lots_list = $result->fetch_all(MYSQLI_ASSOC);
